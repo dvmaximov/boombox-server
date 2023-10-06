@@ -1,0 +1,1 @@
+import{Q as e}from"./QPage.7452c4bc.js";import{_ as a,K as r,M as s,N as t,O as o,X as n}from"./index.df45ce35.js";const c=r({name:"ProgramsPage",setup(){return{}}}),_=n("h3",null,"Programs",-1);function m(p,f,i,u,d,l){return s(),t(e,{class:"row items-center justify-evenly"},{default:o(()=>[_]),_:1})}var h=a(c,[["render",m]]);export{h as default};
