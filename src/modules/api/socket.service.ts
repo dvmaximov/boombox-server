@@ -16,6 +16,7 @@ import {
 import { Message } from "../../shared/models/socket.interface";
 import { WorkstationsService } from "../workstations/workstations.service";
 import { Workstation } from "src/shared/models/workstation.interface";
+import { Inject, forwardRef } from "@nestjs/common";
 
 @WebSocketGateway({
   cors: {
@@ -30,7 +31,10 @@ export class SocketService implements OnGatewayDisconnect {
   >();
   private uiStation: Workstation | null = null;
 
-  constructor(private readonly workstationService: WorkstationsService) {}
+  constructor(
+    @Inject(forwardRef(() => WorkstationsService))
+    private readonly workstationService: WorkstationsService,
+  ) {}
 
   @SubscribeMessage("registration")
   async registration(client: Socket, data: Message): Promise<Message> {
@@ -50,6 +54,17 @@ export class SocketService implements OnGatewayDisconnect {
       .emit("registration", answer);
     if (this.uiStation) {
       this.emit(this.uiStation.name, "updateWorkstations");
+    }
+
+    return data;
+  }
+
+  @SubscribeMessage("getPrograms")
+  async getPrograms(client: Socket, data: Message): Promise<Message> {
+    // const programs = data.message;
+    // console.log(programs);
+    if (this.uiStation) {
+      this.emit(this.uiStation.name, "getPrograms", data);
     }
 
     return data;

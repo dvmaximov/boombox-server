@@ -7,5 +7,6 @@ import { ProgramsItemsService } from "./programs-items.service";
 @Module({
   controllers: [ProgramsController, ProgramsItemsController],
   providers: [ProgramsService, ProgramsItemsService],
+  exports: [ProgramsService, ProgramsItemsService],
 })
 export class ProgramsModule {}

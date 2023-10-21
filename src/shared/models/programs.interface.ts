@@ -8,6 +8,8 @@ export interface Program {
   imageShowTime: number;
 }
 
+export type Programs = Program[];
+
 export interface ProgramItem {
   id?: number;
   program_id: number;

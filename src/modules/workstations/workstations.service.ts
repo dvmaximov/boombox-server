@@ -1,16 +1,34 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { initResult, ApiResult } from "src/shared/models/api.interface";
 import { StationType } from "src/shared/models/socket.interface";
 import {
   Workstation,
   Workstations,
 } from "src/shared/models/workstation.interface";
+import { SocketService } from "../api/socket.service";
+import { ProgramsService } from "../programs/programs.service";
 
 @Injectable()
 export class WorkstationsService {
   private workstations: Workstations = [];
+
+  constructor(
+    @Inject(forwardRef(() => SocketService))
+    private readonly socketService: SocketService,
+    private readonly programsService: ProgramsService,
+  ) {}
+
   getWorkstations(): ApiResult {
     return { ...initResult, result: this.workstations };
+  }
+
+  getProgramsByStationName(name: string) {
+    this.socketService.emit(name, "getPrograms");
+  }
+
+  async sendProgram(name: string, id: number) {
+    const program = await this.programsService.getById(id);
+    this.socketService.emit(name, "setProgram", program);
   }
 
   createWorkstation(
