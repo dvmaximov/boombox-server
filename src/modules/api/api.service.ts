@@ -96,12 +96,13 @@ export class ApiService {
         CREATE TABLE [programs] (
           [id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
           [name] VARCHAR(100)  UNIQUE NOT NULL,
-          [startTime] TIME  NOT NULL,
-          [endTime] TIME  NOT NULL,
-          [audio_id] INTEGER  NULL,
-          [spinner_id] INTEGER  NULL,
-          FOREIGN KEY (audio_id)  REFERENCES audio (id) ON DELETE SET NULL,
-          FOREIGN KEY (spinner_id)  REFERENCES spinners (id) ON DELETE SET NULL
+          [startTime] VARCHAR(10)  NOT NULL,
+          [endTime] VARCHAR(10)  NOT NULL,
+          [imageShowTime] INTEGER DEFAULT 0 NOT NULL,
+          [audio_id] INTEGER DEFAULT 'NULL'  NULL,
+          [spinner_id] INTEGER DEFAULT 'NULL'  NULL,
+          FOREIGN KEY (audio_id)  REFERENCES audio (id) ON DELETE RESTRICT,
+          FOREIGN KEY (spinner_id)  REFERENCES spinners (id) ON DELETE RESTRICT
           )
         `,
       )
@@ -114,8 +115,8 @@ export class ApiService {
           [program_id] INTEGER  NOT NULL,
           [image_id] INTEGER  NOT NULL,
           [imageContent] TEXT  NOT NULL,
-          [startDate] DATE DEFAULT CURRENT_DATE NOT NULL,
-          [endDate] DATE DEFAULT CURRENT_DATE NOT NULL,
+          [startDate] VARCHAR(10) NOT NULL,
+          [endDate] VARCHAR(10) NOT NULL,
           [active] BOOLEAN DEFAULT 'true' NOT NULL,
           FOREIGN KEY (program_id)  REFERENCES programs (id) ON DELETE CASCADE,
           FOREIGN KEY (image_id)  REFERENCES images (id) ON DELETE CASCADE
@@ -283,9 +284,9 @@ export class ApiService {
             `,
         )
         .run(id);
-      answer.result = "ok";
+      answer.result = "Запись успешно удалена.";
     } catch (e) {
-      answer.error = e;
+      answer.error = `Ошибка удаления записи на сервере. ${e}`;
     }
     return answer;
   }

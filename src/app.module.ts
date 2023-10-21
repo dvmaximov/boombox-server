@@ -12,6 +12,7 @@ import { WorkstationsModule } from "./modules/workstations/workstations.module";
 import { AudioModule } from "./modules/audio/audio.module";
 import { ImagesModule } from "./modules/images/images.module";
 import { SpinnersModule } from "./modules/spinners/spinners.module";
+import { ProgramsModule } from './modules/programs/programs.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SpinnersModule } from "./modules/spinners/spinners.module";
     AudioModule,
     ImagesModule,
     SpinnersModule,
+    ProgramsModule,
   ],
   controllers: [AppController],
   providers: [],

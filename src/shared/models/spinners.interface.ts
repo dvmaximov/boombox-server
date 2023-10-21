@@ -1,6 +1,5 @@
 export interface Spinner {
   id?: number;
-  uuid?: string;
   name: string;
   color1: string;
   color2: string;
