@@ -201,8 +201,6 @@ export class ApiService {
     }
     const fieldsStr = "'" + fields.join("','") + "'";
     const valuesStr = "'" + values.join("','") + "'";
-    // const fieldsStr = "'uuid','" + fields.join("','") + "'";
-    // const valuesStr = `'${uuidv4()}','` + values.join("','") + "'";
     answer.result = this.db
       .prepare(
         `
@@ -262,15 +260,20 @@ export class ApiService {
     }
     setsStr = fields.join(",");
 
-    answer.result = this.db
-      .prepare(
-        `
+    try {
+      this.db
+        .prepare(
+          `
         UPDATE ${table} 
         SET ${setsStr}
         WHERE id = ?
           `,
-      )
-      .run(id);
+        )
+        .run(id);
+      answer.result = "Запись успешно сохранена.";
+    } catch (e) {
+      answer.error = `Ошибка сохранения записи на сервере. ${e}`;
+    }
     return answer;
   }
 

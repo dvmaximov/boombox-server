@@ -27,6 +27,7 @@ export class ProgramsItemsController {
       "startDate",
       "endDate",
       "active",
+      "imageContent",
     ]);
     return result;
   }
@@ -62,8 +63,8 @@ export class ProgramsItemsController {
   ): Promise<ApiResult> {
     let answer = { ...initResult };
     try {
-      await this.programsItemsService.update(signInDto.record);
-      answer = await this.programsItemsService.getById(signInDto.record.id);
+      answer = await this.programsItemsService.update(signInDto.record);
+      // answer = await this.programsItemsService.getById(signInDto.record.id);
     } catch (err) {
       answer.error = err;
     }
