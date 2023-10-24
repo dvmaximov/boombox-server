@@ -1,11 +1,53 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { ApiResult } from "src/shared/models/api.interface";
 import { ApiService } from "../api/api.service";
 import { ProgramItem } from "src/shared/models/programs.interface";
+import { isTimeBetween, isTomorrowBetween } from "src/services/utils.service";
+import { WorkstationsService } from "../workstations/workstations.service";
 
 @Injectable()
 export class ProgramsItemsService {
-  constructor(private readonly api: ApiService) {}
+  private timer: ReturnType<typeof setInterval> = null;
+  private isItemsChecked = false;
+
+  constructor(
+    @Inject(forwardRef(() => WorkstationsService))
+    private readonly workstationService: WorkstationsService,
+    private readonly api: ApiService,
+  ) {
+    this.timer = setInterval(
+      () => {
+        this.checkActiveItems();
+      },
+      5 * 60 * 1000,
+    );
+  }
+
+  async checkActiveItems() {
+    const answer = await this.api.getAll("programItems");
+    if (!answer.result) return;
+    const items = answer.result as ProgramItem[];
+    if (items.length === 0) return;
+
+    let testTime = isTimeBetween("23:30", "23:50");
+    if (testTime && !this.isItemsChecked) {
+      for (const item of items) {
+        if (
+          !isTomorrowBetween(item.startDate, item.endDate) &&
+          item.active == "true"
+        ) {
+          item.active = "false";
+          await this.api.update("programItems", item);
+        }
+      }
+      this.isItemsChecked = true;
+      await this.workstationService.updateItemsAfterCheck();
+    }
+    testTime = isTimeBetween("00:05", "00:30");
+    if (testTime && this.isItemsChecked) {
+      this.isItemsChecked = false;
+    }
+  }
 
   async getAll(fields: string[] = []): Promise<ApiResult> {
     return await this.api.getAll("programItems", fields);

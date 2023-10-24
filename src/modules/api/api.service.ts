@@ -101,6 +101,7 @@ export class ApiService {
           [imageShowTime] INTEGER DEFAULT 0 NOT NULL,
           [audio_id] INTEGER DEFAULT 'NULL'  NULL,
           [spinner_id] INTEGER DEFAULT 'NULL'  NULL,
+          [scheduled] BOOLEAN DEFAULT 'true' NOT NULL,
           FOREIGN KEY (audio_id)  REFERENCES audio (id) ON DELETE RESTRICT,
           FOREIGN KEY (spinner_id)  REFERENCES spinners (id) ON DELETE RESTRICT
           )
@@ -145,18 +146,22 @@ export class ApiService {
   async fillDataV1(): Promise<void> {
     const settings = [
       {
-        // uuid: uuidv4(),
         settingLabel: "порт",
         name: "port",
         value: "8880",
         editable: "false",
       },
       {
-        // uuid: uuidv4(),
         settingLabel: "версия",
         name: "version",
         value: "1",
         editable: "false",
+      },
+      {
+        settingLabel: "адрес домена",
+        name: "domain",
+        value: "192.168.1.26",
+        editable: "true",
       },
     ];
 

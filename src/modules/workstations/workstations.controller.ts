@@ -24,4 +24,16 @@ export class WorkstationsController {
   sendProgram(@Param("name") name: string, @Param("id") id: number) {
     this.workstationsService.sendProgram(name, id);
   }
+
+  @UseGuards(AuthGuard)
+  @Get("delete/:name/:id")
+  deleteProgram(@Param("name") name: string, @Param("id") id: number) {
+    this.workstationsService.deleteProgram(name, id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get("update/:name/:id")
+  updateProgram(@Param("name") name: string, @Param("id") id: number) {
+    this.workstationsService.updateProgram(name, id);
+  }
 }

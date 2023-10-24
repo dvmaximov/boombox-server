@@ -13,7 +13,6 @@ import { AudioModule } from "./modules/audio/audio.module";
 import { ImagesModule } from "./modules/images/images.module";
 import { SpinnersModule } from "./modules/spinners/spinners.module";
 import { ProgramsModule } from "./modules/programs/programs.module";
-// import { SocketService } from "./modules/api/socket.service";
 
 @Module({
   imports: [

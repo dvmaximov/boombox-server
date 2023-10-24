@@ -5,5 +5,6 @@ import { SpinnersController } from "./spinners.controller";
 @Module({
   providers: [SpinnersService],
   controllers: [SpinnersController],
+  exports: [SpinnersService],
 })
 export class SpinnersModule {}

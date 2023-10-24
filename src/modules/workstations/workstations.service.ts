@@ -31,6 +31,21 @@ export class WorkstationsService {
     this.socketService.emit(name, "setProgram", program);
   }
 
+  async deleteProgram(name: string, id: number) {
+    this.socketService.emit(name, "deleteProgram", id);
+  }
+
+  async updateProgram(name: string, id: number) {
+    const program = await this.programsService.getById(id);
+    this.socketService.emit(name, "updateProgram", program);
+  }
+
+  async updateItemsAfterCheck() {
+    for (const station of this.workstations) {
+      this.socketService.emit(station.name, "updateItemsAfterCheck");
+    }
+  }
+
   createWorkstation(
     name: string,
     socketId: string,

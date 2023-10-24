@@ -17,6 +17,10 @@ import { Message } from "../../shared/models/socket.interface";
 import { WorkstationsService } from "../workstations/workstations.service";
 import { Workstation } from "src/shared/models/workstation.interface";
 import { Inject, forwardRef } from "@nestjs/common";
+import { ProgramsService } from "../programs/programs.service";
+import { ProgramsItemsService } from "../programs/programs-items.service";
+import { SpinnersService } from "../spinners/spinners.service";
+import { AudioService } from "../audio/audio.service";
 
 @WebSocketGateway({
   cors: {
@@ -34,6 +38,10 @@ export class SocketService implements OnGatewayDisconnect {
   constructor(
     @Inject(forwardRef(() => WorkstationsService))
     private readonly workstationService: WorkstationsService,
+    private readonly programsService: ProgramsService,
+    private readonly programsItemsService: ProgramsItemsService,
+    private readonly spinnersService: SpinnersService,
+    private readonly audioService: AudioService,
   ) {}
 
   @SubscribeMessage("registration")
@@ -61,12 +69,30 @@ export class SocketService implements OnGatewayDisconnect {
 
   @SubscribeMessage("getPrograms")
   async getPrograms(client: Socket, data: Message): Promise<Message> {
-    // const programs = data.message;
-    // console.log(programs);
     if (this.uiStation) {
       this.emit(this.uiStation.name, "getPrograms", data);
     }
 
+    return data;
+  }
+
+  @SubscribeMessage("getProgramItems")
+  async getProgramItems(client: Socket, data: Message): Promise<Message> {
+    const id = data.message["id"] as number;
+    let items = await this.programsItemsService.getAll();
+    items = items.result.filter(
+      (item) => item.program_id === id && item.active == "true",
+    );
+    const program = await this.programsService.getById(id);
+    let spinner = await this.spinnersService.getById(program.result.spinner_id);
+    spinner = spinner.result;
+    let audio = await this.audioService.getById(program.result.audio_id);
+    audio = audio.result;
+    this.emit(data.station.stationName, "getProgramItems", {
+      items,
+      spinner,
+      audio,
+    });
     return data;
   }
 
