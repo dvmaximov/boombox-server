@@ -26,15 +26,14 @@ export class AuthController {
   @Post("change")
   async change(@Body() signInDto: Record<string, any>): Promise<ApiResult> {
     const answer = { ...initResult };
-    // try {
-    //   const token = await this.authService.signIn(
-    //     "bb-admin",
-    //     signInDto.password,
-    //   );
-    //   answer.result = { ...token };
-    // } catch (err) {
-    //   answer.error = err;
-    // }
+    try {
+      answer.result = await this.authService.getHash(
+        "bb-admin",
+        signInDto.password,
+      );
+    } catch (err) {
+      answer.error = err;
+    }
     return answer;
   }
 }

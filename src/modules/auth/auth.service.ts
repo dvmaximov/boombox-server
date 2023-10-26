@@ -2,6 +2,8 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { UsersService } from "../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { CryptService } from "../crypt/crypt.service";
+import { ApiService } from "../api/api.service";
+import { ApiResult } from "src/shared/models/api.interface";
 
 @Injectable()
 export class AuthService {
@@ -9,6 +11,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private readonly crypt: CryptService,
+    private readonly api: ApiService,
   ) {}
 
   async signIn(username: string, pass: string): Promise<any> {
@@ -21,5 +24,12 @@ export class AuthService {
     return {
       token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async getHash(username: string, pass: string): Promise<ApiResult> {
+    const newHash = await this.crypt.getHash(pass);
+    const user = await this.usersService.findOne(username);
+    user.password = newHash;
+    return this.api.update("users", user);
   }
 }
