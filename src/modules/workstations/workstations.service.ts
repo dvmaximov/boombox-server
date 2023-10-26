@@ -40,6 +40,14 @@ export class WorkstationsService {
     this.socketService.emit(name, "updateProgram", program);
   }
 
+  async restartProgram(name: string) {
+    this.socketService.emit(name, "restartProgram");
+  }
+
+  async updateSpinner(name: string, id: number) {
+    this.socketService.emit(name, "updateSpinner", id);
+  }
+
   async updateItemsAfterCheck() {
     for (const station of this.workstations) {
       this.socketService.emit(station.name, "updateItemsAfterCheck");

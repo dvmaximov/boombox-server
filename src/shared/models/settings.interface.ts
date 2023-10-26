@@ -7,4 +7,4 @@ export interface Setting {
   editable: string;
 }
 
-export type Settings = Array<Setting>;
+export type Settings = Setting[];

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ApiService } from "../api/api.service";
 import { ApiResult, initResult } from "../../shared/models/api.interface";
 import { networkInterfaces } from "os";
+import { Setting } from "src/shared/models/settings.interface";
 
 @Injectable()
 export class SettingsService {
@@ -9,6 +10,9 @@ export class SettingsService {
 
   async getAll(): Promise<ApiResult> {
     return await this.api.getAll("settings");
+  }
+  async getById(id: number): Promise<ApiResult> {
+    return await this.api.getById("settings", id);
   }
 
   async getIpAddresses(): Promise<ApiResult> {
@@ -37,7 +41,7 @@ export class SettingsService {
     return await this.api.getById("settings", id);
   }
 
-  async update(id: number): Promise<ApiResult> {
-    return await this.api.getById("settings", id);
+  async update(record: Setting): Promise<ApiResult> {
+    return await this.api.update("settings", record);
   }
 }

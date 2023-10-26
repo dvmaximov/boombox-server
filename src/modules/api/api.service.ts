@@ -149,7 +149,7 @@ export class ApiService {
         settingLabel: "порт",
         name: "port",
         value: "8880",
-        editable: "false",
+        editable: "true",
       },
       {
         settingLabel: "версия",

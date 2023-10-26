@@ -23,6 +23,10 @@ export class ProgramsItemsService {
     );
   }
 
+  onModuleDestroy() {
+    clearInterval(this.timer);
+  }
+
   async checkActiveItems() {
     const answer = await this.api.getAll("programItems");
     if (!answer.result) return;

@@ -21,4 +21,20 @@ export class AuthController {
     }
     return answer;
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Post("change")
+  async change(@Body() signInDto: Record<string, any>): Promise<ApiResult> {
+    const answer = { ...initResult };
+    // try {
+    //   const token = await this.authService.signIn(
+    //     "bb-admin",
+    //     signInDto.password,
+    //   );
+    //   answer.result = { ...token };
+    // } catch (err) {
+    //   answer.error = err;
+    // }
+    return answer;
+  }
 }

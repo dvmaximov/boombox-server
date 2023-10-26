@@ -14,6 +14,12 @@ export class WorkstationsController {
   }
 
   @UseGuards(AuthGuard)
+  @Get("restart/:name")
+  restartProgram(@Param("name") name: string) {
+    this.workstationsService.restartProgram(name);
+  }
+
+  @UseGuards(AuthGuard)
   @Get(":name")
   getProgramsByStationName(@Param("name") name: string) {
     this.workstationsService.getProgramsByStationName(name);
@@ -35,5 +41,11 @@ export class WorkstationsController {
   @Get("update/:name/:id")
   updateProgram(@Param("name") name: string, @Param("id") id: number) {
     this.workstationsService.updateProgram(name, id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get("updateSpinner/:name/:id")
+  updateSpinner(@Param("name") name: string, @Param("id") id: number) {
+    this.workstationsService.updateSpinner(name, id);
   }
 }

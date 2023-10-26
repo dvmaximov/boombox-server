@@ -79,19 +79,30 @@ export class SocketService implements OnGatewayDisconnect {
   @SubscribeMessage("getProgramItems")
   async getProgramItems(client: Socket, data: Message): Promise<Message> {
     const id = data.message["id"] as number;
+    let program = await this.programsService.getById(id);
+    if (program.error || !program.result) {
+      this.emit(data.station.stationName, "getProgramItems", {
+        items: null,
+        spinner: null,
+        audio: null,
+        program: null,
+      });
+      return;
+    }
     let items = await this.programsItemsService.getAll();
     items = items.result.filter(
       (item) => item.program_id === id && item.active == "true",
     );
-    const program = await this.programsService.getById(id);
     let spinner = await this.spinnersService.getById(program.result.spinner_id);
     spinner = spinner.result;
     let audio = await this.audioService.getById(program.result.audio_id);
     audio = audio.result;
+    program = program.result;
     this.emit(data.station.stationName, "getProgramItems", {
       items,
       spinner,
       audio,
+      program,
     });
     return data;
   }

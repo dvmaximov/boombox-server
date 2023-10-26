@@ -53,3 +53,7 @@ export const isTomorrowBetween = (
   if (now >= start && now <= end) result = true;
   return result;
 };
+
+export const delay = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};

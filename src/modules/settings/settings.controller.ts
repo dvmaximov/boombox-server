@@ -1,6 +1,6 @@
-import { Controller, Get, Body, UseGuards } from "@nestjs/common";
+import { Controller, Get, Put, Body, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../auth/auth.guard";
-import { ApiResult } from "src/shared/models/api.interface";
+import { ApiResult, initResult } from "src/shared/models/api.interface";
 import { SettingsService } from "./settings.service";
 
 @Controller("api/settings")
@@ -20,9 +20,15 @@ export class SettingsController {
   }
 
   @UseGuards(AuthGuard)
-  @Get("/update")
-  async update(@Body() signInDto: Record<string, any>): Promise<void> {
-    console.log(signInDto);
-    // return await this.settingsService.update();
+  @Put("/update")
+  async update(@Body() signInDto: Record<string, any>): Promise<ApiResult> {
+    let answer = { ...initResult };
+    try {
+      await this.settingsService.update(signInDto.record);
+      answer = await this.settingsService.getById(signInDto.record.id);
+    } catch (err) {
+      answer.error = err;
+    }
+    return answer;
   }
 }
