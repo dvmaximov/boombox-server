@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Put,
   Get,
   Delete,
   Param,
@@ -20,12 +21,6 @@ export class ImagesController {
   @Get()
   async getAll(): Promise<ApiResult> {
     const result = await this.imagesService.getAll();
-    return result;
-  }
-
-  @Get(":id")
-  async getById(@Param("id") id: number): Promise<ApiResult> {
-    const result = await this.imagesService.getById(id);
     return result;
   }
 
@@ -63,5 +58,25 @@ export class ImagesController {
       answer.error = err;
     }
     return answer;
+  }
+
+  @UseGuards(AuthGuard)
+  @Put("update")
+  async updateProgram(
+    @Body() signInDto: Record<string, any>,
+  ): Promise<ApiResult> {
+    let answer = { ...initResult };
+    try {
+      answer = await this.imagesService.update(signInDto.record);
+    } catch (err) {
+      answer.error = err;
+    }
+    return answer;
+  }
+
+  @Get(":id")
+  async getById(@Param("id") id: number): Promise<ApiResult> {
+    const result = await this.imagesService.getById(id);
+    return result;
   }
 }

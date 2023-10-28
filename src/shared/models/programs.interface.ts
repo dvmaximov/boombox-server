@@ -18,4 +18,5 @@ export interface ProgramItem {
   startDate: string;
   endDate: string;
   active: string;
+  always?: string;
 }

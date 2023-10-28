@@ -63,10 +63,15 @@ export class AudioController {
       const parts = file.path.split("\\");
       path = parts[parts.length - 1];
     }
+    file.originalname = Buffer.from(file.originalname, "latin1").toString(
+      "utf8",
+    );
+
     const newAudio: Audio = {
       name: file.originalname,
       path,
     };
+
     await this.audioService.insert(newAudio);
     return `Аудио файл ${newAudio.name} добавлен!`;
   }

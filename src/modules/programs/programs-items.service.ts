@@ -30,7 +30,9 @@ export class ProgramsItemsService {
   async checkActiveItems() {
     const answer = await this.api.getAll("programItems");
     if (!answer.result) return;
-    const items = answer.result as ProgramItem[];
+    let items = answer.result as ProgramItem[];
+
+    items = items.filter((item) => item.always != "true");
     if (items.length === 0) return;
 
     let testTime = isTimeBetween("23:30", "23:50");

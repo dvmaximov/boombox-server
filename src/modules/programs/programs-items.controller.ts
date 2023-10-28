@@ -27,6 +27,7 @@ export class ProgramsItemsController {
       "startDate",
       "endDate",
       "active",
+      "always",
       "imageContent",
     ]);
     return result;

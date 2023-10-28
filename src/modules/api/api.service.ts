@@ -70,11 +70,23 @@ export class ApiService {
     this.db
       .prepare(
         `
+        CREATE TABLE [imageCategories] (
+          [id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
+          [name] VARCHAR(100)  UNIQUE NOT NULL,
+          [isDefault] BOOLEAN DEFAULT 'false' NOT NULL          
+          )
+        `,
+      )
+      .run();
+    this.db
+      .prepare(
+        `
         CREATE TABLE [images] (
           [id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
           [name] VARCHAR(100)  UNIQUE NOT NULL,
           [content] TEXT  NOT NULL,
-          [descriptor] TEXT DEFAULT '""' NOT NULL
+          [descriptor] TEXT DEFAULT '' NOT NULL,
+          [category] VARCHAR(100) DEFAULT 'без категории' NOT NULL
           )
         `,
       )
@@ -119,6 +131,7 @@ export class ApiService {
           [startDate] VARCHAR(10) NOT NULL,
           [endDate] VARCHAR(10) NOT NULL,
           [active] BOOLEAN DEFAULT 'true' NOT NULL,
+          [always] BOOLEAN DEFAULT 'flase' NULL,
           FOREIGN KEY (program_id)  REFERENCES programs (id) ON DELETE CASCADE,
           FOREIGN KEY (image_id)  REFERENCES images (id) ON DELETE CASCADE
           )
@@ -135,8 +148,8 @@ export class ApiService {
           [color2] VARCHAR(20) DEFAULT '""' NOT NULL,
           [spin1] INTEGER DEFAULT '0' NOT NULL,
           [spin2] INTEGER DEFAULT '0' NOT NULL,
-          [freq1] INTEGER DEFAULT '0' NOT NULL,
-          [freq2] INTEGER DEFAULT '0' NOT NULL
+          [freq1] REAL DEFAULT '0' NOT NULL,
+          [freq2] REAL DEFAULT '0' NOT NULL
           )
         `,
       )
@@ -173,7 +186,6 @@ export class ApiService {
           `,
         )
         .run(
-          // setting.uuid,
           setting.settingLabel,
           setting.name,
           setting.value,
@@ -188,12 +200,24 @@ export class ApiService {
         `,
       )
       .run(
-        // uuidv4(),
         "bb-admin",
         "admin",
         `$2b$10$iURZVzs/LoEsdG23bA9KYOIR2Hg//UY2/FIaqqcepn.yZlfRuVDaW`,
         "admin",
       );
+
+    const category = {
+      name: "без категории",
+      default: "true",
+    };
+
+    this.db
+      .prepare(
+        `
+        INSERT INTO imageCategories ( name, isDefault ) VALUES (?,?)
+        `,
+      )
+      .run(category.name, category.default);
   }
 
   async insert(table: string, record: unknown = {}): Promise<ApiResult> {

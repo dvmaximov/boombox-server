@@ -91,4 +91,8 @@ export class ImagesService {
     });
     return "data:image/jpeg;base64," + output.toString("base64");
   }
+
+  async update(record: Image): Promise<ApiResult> {
+    return await this.api.update("images", record);
+  }
 }
