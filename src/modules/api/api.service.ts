@@ -38,6 +38,18 @@ export class ApiService {
       await this.createV1();
       await this.fillDataV1();
     }
+    const category = {
+      name: "без категории",
+      default: "true",
+    };
+
+    this.db
+      .prepare(
+        `
+        INSERT INTO imageCategories ( name, isDefault ) VALUES (?,?)
+        `,
+      )
+      .run(category.name, category.default);
   }
 
   async createV1(): Promise<void> {
