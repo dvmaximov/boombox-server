@@ -83,7 +83,7 @@ export class ApiService {
         `
         CREATE TABLE [images] (
           [id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
-          [name] VARCHAR(100)  UNIQUE NOT NULL,
+          [name] VARCHAR(100)  NOT NULL,
           [content] TEXT  NOT NULL,
           [descriptor] TEXT DEFAULT '' NOT NULL,
           [category] VARCHAR(100) DEFAULT 'без категории' NOT NULL
@@ -149,7 +149,9 @@ export class ApiService {
           [spin1] INTEGER DEFAULT '0' NOT NULL,
           [spin2] INTEGER DEFAULT '0' NOT NULL,
           [freq1] REAL DEFAULT '0' NOT NULL,
-          [freq2] REAL DEFAULT '0' NOT NULL
+          [freq2] REAL DEFAULT '0' NOT NULL,
+          [enabled1] INTEGER DEFAULT '1' NULL,
+          [enabled2] INTEGER DEFAULT '1' NULL
           )
         `,
       )
