@@ -1,7 +1,7 @@
 export interface Image {
   id?: number;
   name: string;
-  content: string;
+  content?: string;
   category: string;
   descriptor?: string;
 }

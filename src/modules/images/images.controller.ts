@@ -20,7 +20,7 @@ export class ImagesController {
   @UseGuards(AuthGuard)
   @Get()
   async getAll(): Promise<ApiResult> {
-    const result = await this.imagesService.getAll();
+    const result = await this.imagesService.getAll(["id", "name", "category"]);
     return result;
   }
 

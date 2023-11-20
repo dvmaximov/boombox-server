@@ -39,6 +39,13 @@ export class ProgramsItemsService {
     if (testTime && !this.isItemsChecked) {
       for (const item of items) {
         if (
+          isTomorrowBetween(item.startDate, item.endDate) &&
+          item.active == "false"
+        ) {
+          item.active = "true";
+          await this.api.update("programItems", item);
+        }
+        if (
           !isTomorrowBetween(item.startDate, item.endDate) &&
           item.active == "true"
         ) {
