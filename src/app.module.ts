@@ -13,7 +13,8 @@ import { AudioModule } from "./modules/audio/audio.module";
 import { ImagesModule } from "./modules/images/images.module";
 import { SpinnersModule } from "./modules/spinners/spinners.module";
 import { ProgramsModule } from "./modules/programs/programs.module";
-import { ImageCategoryModule } from './modules/image-category/image-category.module';
+import { ImageCategoryModule } from "./modules/image-category/image-category.module";
+import { VideoModule } from "./modules/video/video.module";
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ImageCategoryModule } from './modules/image-category/image-category.mod
     SpinnersModule,
     ProgramsModule,
     ImageCategoryModule,
+    VideoModule,
   ],
   controllers: [AppController],
   providers: [],

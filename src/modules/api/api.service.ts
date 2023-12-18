@@ -34,6 +34,14 @@ export class ApiService {
       if (settings.length === 0) {
         this.fillDataV1();
       }
+      // this.db
+      //   .prepare(
+      //     `
+      //   UPDATE programs
+      //   SET program_type = 'изображение'
+      //     `,
+      //   )
+      //   .run();
     } catch (e) {
       await this.createV1();
       await this.fillDataV1();
@@ -105,6 +113,19 @@ export class ApiService {
     this.db
       .prepare(
         `
+        CREATE TABLE [video] (
+          [id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
+          [name] VARCHAR(100)  NOT NULL,
+          [content] TEXT  NOT NULL,
+          [video_type] VARCHAR(100) DEFAULT 'файл' NOT NULL,
+          [category] VARCHAR(100) DEFAULT 'без категории' NOT NULL
+          )
+        `,
+      )
+      .run();
+    this.db
+      .prepare(
+        `
         CREATE TABLE [programs] (
           [id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
           [name] VARCHAR(100)  UNIQUE NOT NULL,
@@ -114,6 +135,7 @@ export class ApiService {
           [audio_id] INTEGER DEFAULT 'NULL'  NULL,
           [spinner_id] INTEGER DEFAULT 'NULL'  NULL,
           [scheduled] BOOLEAN DEFAULT 'true' NOT NULL,
+          [program_type] VARCHAR(100) DEFAULT 'изображение' NOT NULL,
           FOREIGN KEY (audio_id)  REFERENCES audio (id) ON DELETE RESTRICT,
           FOREIGN KEY (spinner_id)  REFERENCES spinners (id) ON DELETE RESTRICT
           )

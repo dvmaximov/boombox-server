@@ -3,6 +3,7 @@
 /node_modules
 /info
 /client/audio
+/client/video
 
 bb-server.s3db
 package-lock.json

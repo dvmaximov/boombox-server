@@ -6,6 +6,7 @@ export interface Program {
   startTime: string;
   endTime: string;
   imageShowTime: number;
+  program_type: string;
 }
 
 export type Programs = Program[];
