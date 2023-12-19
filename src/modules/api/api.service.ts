@@ -154,8 +154,7 @@ export class ApiService {
           [endDate] VARCHAR(10) NOT NULL,
           [active] BOOLEAN DEFAULT 'true' NOT NULL,
           [always] BOOLEAN DEFAULT 'flase' NULL,
-          FOREIGN KEY (program_id)  REFERENCES programs (id) ON DELETE CASCADE,
-          FOREIGN KEY (image_id)  REFERENCES images (id) ON DELETE CASCADE
+          FOREIGN KEY (program_id)  REFERENCES programs (id) ON DELETE CASCADE
           )
         `,
       )
