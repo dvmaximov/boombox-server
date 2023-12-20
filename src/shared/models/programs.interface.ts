@@ -21,3 +21,8 @@ export interface ProgramItem {
   active: string;
   always?: string;
 }
+
+export const ProgramType = {
+  IMAGE: "изображение",
+  VIDEO: "видео",
+};

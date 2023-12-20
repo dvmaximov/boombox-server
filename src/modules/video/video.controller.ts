@@ -17,7 +17,7 @@ import { ApiResult, initResult } from "src/shared/models/api.interface";
 import { VideoService } from "./video.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
-import { Video } from "src/shared/models/video.interface";
+import { Video, VideoType } from "src/shared/models/video.interface";
 
 @Controller("api/video")
 export class VideoController {
@@ -100,9 +100,9 @@ export class VideoController {
     );
     const newVideo: Video = {
       name: file.originalname,
-      content: `файл:${path}`,
+      content: `${VideoType.FILE}:${path}`,
       category: "без категории",
-      video_type: "файл",
+      video_type: VideoType.FILE,
     };
 
     await this.videoService.insert(newVideo);
