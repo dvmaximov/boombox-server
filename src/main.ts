@@ -11,6 +11,7 @@ async function bootstrap() {
   app.setViewEngine("html");
   app.enableCors({
     exposedHeaders: "Content-Disposition",
+    origin: true,
   });
   app.use(bodyParser.json({ limit: "50mb" }));
   app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
